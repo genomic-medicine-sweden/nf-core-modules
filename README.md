@@ -1,0 +1,374 @@
+# genomic-medicine-sweden/modules
+
+Adapted from [nf-core/modules/README.md](https://github.com/nf-core/modules/blob/master/README.md)
+
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.10.3-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
+[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
+[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
+[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
+
+An nf-core modules repository hosting Nextflow DSL2 modules for the genomic-medicine-sweden organization.
+
+## Table of contents
+
+- [Modules](#modules)
+- [Sub-workflows](#sub-workflows)
+- [Cross-organisation sub-workflows](#cross-organisation-sub-workflows)
+  - [Writing cross-organisation sub-workflows](#writing-cross-organisation-sub-workflows)
+  - [Testing cross-organisation sub-workflows](#testing-cross-organisation-sub-workflows)
+  - [Using cross-organisation sub-workflows in pipelines](#using-cross-organisation-sub-workflows-in-pipelines)
+- [Citation](#citation)
+- [Template](#template)
+
+## Modules
+
+The module files hosted in this repository define a set of processes for software tools that allow you to share and add common functionality across multiple pipelines in a modular fashion.
+
+We use a helper command in the `nf-core/tools` package that uses the GitHub API to obtain the relevant information for the module files present in the [`modules/`](modules/) directory of this repository. This includes using `git` commit hashes to track changes for reproducibility purposes, and to download and install all of the relevant module files.
+
+1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) version 3.4 or later.
+   Version 3.3 and earlier do **not** support sub-workflows recorded in this repository.
+2. List the available modules:
+
+   ```bash
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git list remote
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+   INFO     Modules available from https://github.com/genomic-medicine-sweden/modules.git (main):
+
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ Module Name                ┃
+   ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+   │ examplemodule              │
+   ..truncated..
+   ```
+
+3. Install the module in your pipeline directory:
+
+   ```bash
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git install examplemodule
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+   INFO     Installing 'examplemodule'
+   INFO     Use the following statement to include this module:
+
+    include { EXAMPLEMODULE } from '../modules/genomic-medicine-sweden/examplemodule/main'
+   ```
+
+4. Use the `include` statement as is in your workflow file `workflows/name.nf`.
+   If you want to add the module do a sub-workflow such as `subworkflows/local/name/main.nf`,
+   you will need to adjust the path accordingly:
+
+   ```nextflow
+   include { EXAMPLEMODULE } from '../../../modules/genomic-medicine-sweden/examplemodule/main'
+   ```
+
+5. Check that a locally installed genomic-medicine-sweden module is up-to-date compared to the one hosted in this repo:
+
+   ```bash
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git lint examplemodule
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+      INFO     Linting pipeline: '.'
+      INFO     Linting module: 'examplemodule'
+
+   ╭─ [!] 2 Module Test Warnings ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+   │              ╷                                     ╷                                                                                                                                         │
+   │ Module name  │ File path                           │ Test message                                                                                                                            │
+   │╶─────────────┼─────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╴│
+   │ examplemodule     │ modules/genomic-medicine-sweden/examplemodule/main.nf │ Unable to connect to container registry, code:  404, url: https://community.wave.seqera.io/library/seqtk_perl:37201934bb74266e          │
+   │ examplemodule     │ modules/genomic-medicine-sweden/examplemodule/main.nf │ Container versions do not match                                                                                                         │
+   │              ╵                                     ╵                                                                                                                                         │
+   ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+   ╭───────────────────────╮
+   │ LINT RESULTS SUMMARY  │
+   ├───────────────────────┤
+   │ [✔]  34 Tests Passed  │
+   │ [!]   2 Test Warnings │
+   │ [✗]   0 Tests Failed  │
+   ╰───────────────────────╯
+   ```
+
+6. Remove the module from the pipeline repository if required:
+
+   ```bash
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git remove examplemodule
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+   INFO     Removed files for 'examplemodule' and its dependencies 'examplemodule'.
+   ```
+
+## Sub-workflows
+
+The sub-workflow files hosted in this repository define arrangements of existing software tools (modules) that are frequently seen across pipelines.
+Like modules, sub-workflows are managed with the `nf-core/tools` package and allow you to share and add common functionality across multiple pipelines in a modular fashion.
+
+Sub-workflows are stored in the [`subworkflows/`](subworkflows/) directory of this repository.
+
+1. List the available sub-workflows:
+
+   ```bash
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git list remote
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+   INFO     Subworkflows available from https://github.com/genomic-medicine-sweden/modules.git (main):
+
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ Subworkflow Name               ┃
+   ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+   │ examplesubworkflow             │
+   ..truncated..
+   ```
+
+2. Install the sub-workflow in your pipeline directory:
+
+   ```bash
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git install examplesubworkflow
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+   INFO     Installing 'examplesubworkflow'
+   INFO     Use the following statement to include this subworkflow:
+
+    include { EXAMPLESUBWORKFLOW } from '../subworkflows/genomic-medicine-sweden/examplesubworkflow/main'
+   ```
+
+   This will automatically install module (and sub-workflow) dependencies in `modules/nf-core`.
+
+3. Import the sub-workflow in your workflow (expected to live in `workflows/`):
+
+   ```nextflow
+   include { EXAMPLESUBWORKFLOW } from '../subworkflows/genomic-medicine-sweden/examplesubworkflow/main'
+   ```
+
+4. Check that a locally installed genomic-medicine-sweden sub-workflow is up-to-date compared to the one hosted in this repo:
+
+   ```bash
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git lint examplesubworkflow
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+      INFO     Linting pipeline: '.'
+      INFO     Linting subworkflow: 'examplesubworkflow'
+
+   ╭───────────────────────╮
+   │ LINT RESULTS SUMMARY  │
+   ├───────────────────────┤
+   │ [✔]  26 Tests Passed  │
+   │ [!]   0 Test Warnings │
+   │ [✗]   0 Tests Failed  │
+   ╰───────────────────────╯
+   ```
+
+5. Remove the sub-workflow from the pipeline repository if required:
+
+   ```bash
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git remove examplesubworkflow
+   ```
+
+   ```console
+                                             ,--./,-.
+            ___     __   __   __   ___      /,-._.--~\
+      |\ | |__  __ /  ` /  \ |__) |__          }  {
+      | \| |       \__, \__/ |  \ |___      \`-._,-`-,
+                                             `._,._,'
+
+      nf-core/tools version 3.4.1 - https://nf-co.re
+
+   INFO     Removed files for 'examplesubworkflow' and its dependencies 'examplesubworkflow'.
+   ```
+
+## Cross-organisation sub-workflows
+
+"Cross-organisation" sub-workflows are sub-workflows that contain components from both `nf-core/modules` and `genomic-medicine-sweden/modules`.
+They require the version 3.4 (or later) of the `nf-core/tools` package.
+
+### Writing cross-organisation sub-workflows
+
+A reference example exists in the nf-core test repository <https://github.com/nf-core-test/modules>.
+
+1. Write sub-workflows `.nf` files that refer to locations in both `genomic-medicine-sweden` and `nf-core`.
+   [Example](https://github.com/nf-core-test/modules/blob/main/subworkflows/nf-core-test/get_genome_annotation/main.nf#L1-L2)
+
+2. In `meta.yml`:
+   1. Change the first line to
+
+      ```yaml
+      # yaml-language-server: $schema=https://raw.githubusercontent.com/genomic-medicine-sweden/modules/main/subworkflows/yaml-schema.json
+      ```
+
+      [Example](https://github.com/nf-core-test/modules/blob/main/subworkflows/nf-core-test/get_genome_annotation/meta.yml#L1).
+      This ensures that the right schema will be used to validate the file.
+      This schema differs from the default one by allowing keys such as `git_remote` under "components", which are used to
+      indicate modules that live in the `nf-core/modules` repository, see next point.
+
+   2. Add a `git_remote` key that maps to the nf-core modules repository.
+
+3. In `modules/`, do _not_ add nf-core modules.
+   When installing a sub-workflow, the `nf-core` tools command will identify the nf-core modules from the `git_remote` key
+   explained above, and install those modules automatically.
+
+### Testing cross-organisation sub-workflows
+
+Tests for a cross-organisation sub-workflow also need a copy of the nf-core modules to run.
+We use functions from the `nft-utils` plugin (version 0.0.7 or later), which is declared as a test dependency in `nf-test.config`.
+The functions will automatically download (and clean up) nf-core modules when running tests.
+These functions must be called from the sub-workflow's tests (e.g. the `main.nf.test` file).
+
+In the _setup_ phase:
+
+1. Call `nfcoreInitialise` to initialise a new "library" directory.
+2. Call `nfcoreInstall` to install all the nf-core modules you need in that library.
+   You need to keep this list in sync with the modules declared in `meta.yml`.
+3. Call `nfcoreLink` to link the nf-core modules from the above "library" into the test's "modules" directory.
+
+And in the _cleanup_ phase:
+
+1. Call `nfcoreUnlink`.
+
+(and that's all !)
+
+### Using cross-organisation sub-workflows in pipelines
+
+Pipelines need a few modifications to work seamlessly with cross-organisation sub-workflows.
+
+1. In `.pre-commit-config.yaml`, add extra lines to ignore genomic-medicine-sweden modules and sub-workflows the same way nf-core ones are ignored:
+
+   ```diff
+   --- a/.pre-commit-config.yaml
+   +++ b/.pre-commit-config.yaml
+   @@ -15,6 +15,8 @@ repos:
+                  .*ro-crate-metadata.json$|
+                  modules/nf-core/.*|
+                  subworkflows/nf-core/.*|
+   +              modules/genomic-medicine-sweden/.*|
+   +              subworkflows/genomic-medicine-sweden/.*|
+                  .*\.snap$
+            )$
+         - id: end-of-file-fixer
+   @@ -23,5 +25,7 @@ repos:
+                  .*ro-crate-metadata.json$|
+                  modules/nf-core/.*|
+                  subworkflows/nf-core/.*|
+   +              modules/genomic-medicine-sweden/.*|
+   +              subworkflows/genomic-medicine-sweden/.*|
+                  .*\.snap$
+            )$
+   ```
+
+2. `nf-test.config` needs similar rules:
+
+   ```diff
+   --- a/nf-test.config
+   +++ b/nf-test.config
+   @@ -9,7 +9,7 @@ config {
+      configFile "tests/nextflow.config"
+
+      // ignore tests coming from the nf-core/modules repo
+   -    ignore 'modules/nf-core/**/*', 'subworkflows/nf-core/**/*'
+   +    ignore 'modules/nf-core/**/*', 'subworkflows/nf-core/**/*', 'modules/genomic-medicine-sweden/**/*', 'subworkflows/genomic-medicine-sweden/**/*'
+
+      // run all test with defined profile(s) from the main nextflow.config
+      profile "test"
+   ```
+
+   It also needs to refers to the version 0.0.7 or later of the `nft-utils` plugin (`load "nft-utils@` line).
+
+3. So does `.gitattributes` (to automatically collapse files changed in the sanger-tol components)
+
+   ```diff
+   --- a/.gitattributes
+   +++ b/.gitattributes
+   @@ -2,3 +2,5 @@
+   *.nf.test linguist-language=nextflow
+   modules/nf-core/** linguist-generated
+   subworkflows/nf-core/** linguist-generated
+   +modules/genomic-medicine-sweden/** linguist-generated
+   +subworkflows/genomic-medicine-sweden/** linguist-generated
+   ```
+
+## Citation
+
+If you use the module files in this repository for your analysis please you can cite the `nf-core` publication as follows:
+
+> **The nf-core framework for community-curated bioinformatics pipelines.**
+>
+> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
+>
+> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
+
+## Template
+
+This module library was created using [nf-core/modules-template](https://github.com/nf-core/modules-template) with this command:
+
+```bash
+copier copy --vcs-ref main gh:nf-core/modules-template ./modules
+```
+
+You can fetch updates to the library template by running:
+
+```bash
+pipx install copier
+copier update
+```
