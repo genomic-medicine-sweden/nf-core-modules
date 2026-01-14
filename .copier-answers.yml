@@ -2,12 +2,12 @@
 _commit: 1.0.0
 _src_path: gh:nf-core/modules-template
 ci: github
-copyright_date: '2026'
+copyright_date: "2026"
 copyright_holder: Genomic Medicine Sweden
 copyright_license: MIT License
 default_branch: main
 description: An nf-core modules repository hosting Nextflow DSL2 modules for the genomic-medicine-sweden
-    organization.
+  organization.
 repo_host: https://github.com
 repo_name: modules
 repo_org_name: genomic-medicine-sweden
