@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/genomic-medicine-sweden/nf-core-modules/main/subworkflows/yaml-schema.json
+name: annotate_cadd
+description: |
+  A subworkflow to annotate SNVs and indels with CADD (Combined Annotation
+  Dependent Depletion) scores. Handles chromosome name conversion between
+  reference and CADD conventions, filters variants, runs CADD scoring, and
+  annotates the original VCF with the resulting scores.
+keywords:
+  - annotation
+  - cadd
+  - snv
+  - indel
+  - vcf
+  - variant
+components:
+  - bcftools/annotate:
+      git_remote: https://github.com/nf-core/modules.git
+  - bcftools/view:
+      git_remote: https://github.com/nf-core/modules.git
+  - cadd:
+      git_remote: https://github.com/nf-core/modules.git
+  - gawk:
+      git_remote: https://github.com/nf-core/modules.git
+  - tabix/tabix:
+      git_remote: https://github.com/nf-core/modules.git
+
+input:
+  - ch_fai:
+      type: file
+      description: |
+        Channel containing the reference genome FASTA index file, used to
+        generate chromosome name conversion tables between reference and CADD
+        naming conventions.
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing reference metadata (e.g. genome build)
+        - fai:
+            type: file
+            description: Reference genome FASTA index file
+            pattern: "*.fai"
+  - ch_vcf:
+      type: file
+      description: Channel containing VCF files to be annotated with CADD scores.
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata (e.g. id, sample, sex)
+        - vcf:
+            type: file
+            description: Input VCF file
+            pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - ch_index:
+      type: file
+      description: |
+        Channel containing tabix index files corresponding to the input VCFs.
+        Optional — supply an empty channel if indices are absent.
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata (must match ch_vcf meta)
+        - tbi:
+            type: file
+            description: Tabix index file for the input VCF
+            pattern: "*.tbi"
+  - ch_header:
+      type: file
+      description: |
+        Channel containing a VCF header file that defines the CADD INFO fields
+        to be added during annotation.
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing metadata
+        - header:
+            type: file
+            description: VCF header lines file
+            pattern: "*.txt"
+  - ch_cadd_resources:
+      type: directory
+      description: |
+        Channel containing the directory of CADD annotation resource files
+        (e.g. whole_genome_SNVs.tsv.gz and its index).
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing metadata
+        - cadd_resources:
+            type: directory
+            description: Directory containing CADD annotation resource files
+  - ch_cadd_prescored_indels:
+      type: directory
+      description: |
+        Channel containing the directory of pre-scored CADD indel files used
+        to supplement CADD scoring of indels.
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing metadata
+        - cadd_prescored_indels:
+            type: directory
+            description: Directory containing pre-scored CADD indel files
+
+output:
+  - vcf:
+      type: file
+      description: |
+        Channel containing CADD-annotated VCF files with chromosome names
+        restored to the original reference convention.
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - vcf:
+            type: file
+            description: CADD-annotated VCF file
+            pattern: "*.{vcf,vcf.gz}"
+  - tbi:
+      type: file
+      description: Channel containing tabix index files for the annotated VCF output.
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - tbi:
+            type: file
+            description: Tabix index file for the annotated VCF
+            pattern: "*.tbi"
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"
