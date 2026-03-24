@@ -8,6 +8,11 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_genomicmedicinesweden"
     tag "subworkflows/annotate_cadd"
+    tag "subworkflows/../../modules/nf-core/bcftools/annotate"
+    tag "subworkflows/../../modules/nf-core/bcftools/view"
+    tag "subworkflows/../../modules/nf-core/cadd"
+    tag "subworkflows/../../modules/nf-core/gawk"
+    tag "subworkflows/../../modules/nf-core/tabix/tabix"
 
     setup {
         nfcoreInitialise("${launchDir}/library/")
