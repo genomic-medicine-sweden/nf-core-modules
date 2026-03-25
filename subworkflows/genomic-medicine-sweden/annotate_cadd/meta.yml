@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/genomic-medicine-sweden/nf-core-modules/main/subworkflows/yaml-schema.json
 name: annotate_cadd
 description: |
-  A subworkflow to annotate SNVs and indels with CADD (Combined Annotation
+  A subworkflow to annotate indels with CADD (Combined Annotation
   Dependent Depletion) scores. Handles chromosome name conversion between
   reference and CADD conventions, filters variants, runs CADD scoring, and
   annotates the original VCF with the resulting scores.
