@@ -18,7 +18,13 @@ workflow RANK_VARIANTS {
 
     main:
 
-    if (!val_score_only) {
+    if (val_score_only) {
+        genmod_score_in = ch_vcf
+            .combine(ch_score_config)
+            .map { meta, vcf, _score_config_meta, score_config ->
+                [meta, vcf, [], score_config]
+            }
+    } else {
     GENMOD_ANNOTATE(
         ch_vcf
     )
@@ -37,33 +43,25 @@ workflow RANK_VARIANTS {
         .set { genmod_score_in }
 
     }
-    else {
-        genmod_score_in = ch_vcf
-            .combine(ch_score_config)
-            .map { meta, vcf, score_config_meta, score_config ->
-                tuple(meta, vcf, [], score_config)
-            }
-    }
 
     GENMOD_SCORE(
         genmod_score_in
     )
 
 
-    if (!val_score_only) {
+    if (val_score_only) {
+        bcftool_view_in = GENMOD_SCORE.out.vcf
+            .map { meta, vcf ->
+                [meta, vcf, []]
+            }
+    } else {
         GENMOD_COMPOUND(
             GENMOD_SCORE.out.vcf
         )
 
         bcftool_view_in = GENMOD_COMPOUND.out.vcf
             .map { meta, vcf ->
-                tuple(meta, vcf, [])
-            }
-    }
-    else {
-        bcftool_view_in = GENMOD_SCORE.out.vcf
-            .map { meta, vcf ->
-                tuple(meta, vcf, [])
+                [meta, vcf, []]
             }
     }
 
