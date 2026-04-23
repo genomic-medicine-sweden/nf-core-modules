@@ -22,23 +22,23 @@ workflow RANK_VARIANTS {
         genmod_score_in = ch_vcf
             .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
             .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
+            
     } else {
         GENMOD_ANNOTATE(
             ch_vcf
         )
 
-        GENMOD_ANNOTATE.out.vcf
+        ch_genmod_models_in = GENMOD_ANNOTATE.out.vcf
             .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
-            .set { genmod_models_in }
 
         GENMOD_MODELS(
-            genmod_models_in,
+            ch_genmod_models_in,
             ch_genmod_reduced_penetrance .map { _meta, file -> file },
         )
 
-        GENMOD_MODELS.out.vcf
+        genmod_score_in = GENMOD_MODELS.out.vcf
             .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
-            .set { genmod_score_in }
+            .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
 
     }
 
