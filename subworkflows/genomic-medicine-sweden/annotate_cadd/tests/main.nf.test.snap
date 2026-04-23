@@ -1,0 +1,29 @@
+{
+    "1 sample - stub": {
+        "content": [
+            {
+                "tbi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "rename_chrnames_ann.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "rename_chrnames_ann.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-25T14:14:01.106723984"
+    }
+}
