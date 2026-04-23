@@ -6,7 +6,8 @@ include { GENMOD_ANNOTATE } from '../../../modules/nf-core/genmod/annotate/main'
 include { GENMOD_MODELS   } from '../../../modules/nf-core/genmod/models/main'
 include { GENMOD_SCORE    } from '../../../modules/nf-core/genmod/score/main'
 include { GENMOD_COMPOUND } from '../../../modules/nf-core/genmod/compound/main'
-include { BCFTOOLS_VIEW   } from '../../../modules/nf-core/bcftools/view/main.nf'
+include { BCFTOOLS_VIEW   } from '../../../modules/nf-core/bcftools/view/main'
+include { BCFTOOLS_ANNOTATE } from '../../../modules/nf-core/bcftools/annotate/main.nf'
 
 workflow RANK_VARIANTS {
     take:
@@ -19,58 +20,55 @@ workflow RANK_VARIANTS {
     main:
 
     if (val_score_only) {
-        genmod_score_in = ch_vcf
+        ch_genmod_score_in = ch_vcf
             .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
             .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
-            
-    } else {
+    }
+    else {
         GENMOD_ANNOTATE(
             ch_vcf
         )
 
-        ch_genmod_models_in = GENMOD_ANNOTATE.out.vcf
-            .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
+        ch_genmod_models_in = GENMOD_ANNOTATE.out.vcf.join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
 
         GENMOD_MODELS(
             ch_genmod_models_in,
-            ch_genmod_reduced_penetrance .map { _meta, file -> file },
+            ch_genmod_reduced_penetrance.map { _meta, file -> file },
         )
 
-        genmod_score_in = GENMOD_MODELS.out.vcf
+        ch_genmod_score_in = GENMOD_MODELS.out.vcf
             .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
             .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
-
     }
 
     GENMOD_SCORE(
-        genmod_score_in
+        ch_genmod_score_in
     )
 
-
     if (val_score_only) {
-        bcftool_view_in = GENMOD_SCORE.out.vcf
-            .map { meta, vcf ->
-                [meta, vcf, []]
-            }
-    } else {
+        ch_bcftool_view_in = GENMOD_SCORE.out.vcf.map { meta, vcf ->
+            [meta, vcf, []]
+        }
+    }
+    else {
         GENMOD_COMPOUND(
             GENMOD_SCORE.out.vcf
         )
 
-        bcftool_view_in = GENMOD_COMPOUND.out.vcf
-            .map { meta, vcf ->
-                [meta, vcf, []]
-            }
+        ch_bcftool_view_in = GENMOD_COMPOUND.out.vcf.map { meta, vcf ->
+            [meta, vcf, []]
+        }
     }
 
+    // Genmod can only output a uncompressed VCF, bcftools view can be used to compress and index the output.
     BCFTOOLS_VIEW(
-        bcftool_view_in,
+        ch_bcftool_view_in,
         [],
         [],
-        []
+        [],
     )
 
     emit:
-    vcf      = BCFTOOLS_VIEW.out.vcf // channel: [ val(meta), path(vcf) ]
-    tbi      = BCFTOOLS_VIEW.out.tbi // channel: [ val(meta), path(tbi) ]
+    vcf = BCFTOOLS_VIEW.out.vcf                              // channel: [ val(meta), path(vcf) ]
+    index = BCFTOOLS_VIEW.out.tbi.mix(BCFTOOLS_VIEW.out.csi) // channel: [ val(meta), path(index) ]
 }

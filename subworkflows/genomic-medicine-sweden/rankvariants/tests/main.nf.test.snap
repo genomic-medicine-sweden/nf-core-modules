@@ -1,0 +1,12 @@
+{
+    "All genmod modules": {
+        "content": [
+            "4b2da055241ee8f39cb2fd2b06534f3b"
+        ],
+        "timestamp": "2026-04-23T16:21:04.053227576",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.1"
+        }
+    }
+}
