@@ -59,8 +59,9 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.tbi.get(0).get(1).endsWith("tbi") },
+                { assert workflow.trace.sucessed().size() == 5 }, 
                 { assert snapshot(
+                    file(workflow.out.index.get(0).get(1)).name,
                     path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5
                 ).match() }
             )
@@ -70,6 +71,49 @@ nextflow_workflow {
             nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
         }
     }
+
+test("Genmod score only") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz', checkIfExists: true)
+                ])
+                input[1] = channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
+                ])
+                input[2] = channel.of([
+                    [ id: 'genmod_reduced_penetrance' ],
+                    []
+                ])
+                input[3] = channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/svrank_model_-v1.8-.ini', checkIfExists: true)
+                ])
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.sucessed().size() == 2 },
+                { assert snapshot(
+                    file(workflow.out.index.get(0).get(1)).name,
+                    path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5
+                ).match() }
+            )
+        }
+
+        cleanup {
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
+        }
+    }
+
 
     // test("1 sample - stub") {
 
