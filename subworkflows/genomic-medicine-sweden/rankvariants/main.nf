@@ -7,7 +7,6 @@ include { GENMOD_MODELS   } from '../../../modules/nf-core/genmod/models/main'
 include { GENMOD_SCORE    } from '../../../modules/nf-core/genmod/score/main'
 include { GENMOD_COMPOUND } from '../../../modules/nf-core/genmod/compound/main'
 include { BCFTOOLS_VIEW   } from '../../../modules/nf-core/bcftools/view/main'
-include { BCFTOOLS_ANNOTATE } from '../../../modules/nf-core/bcftools/annotate/main.nf'
 
 workflow RANK_VARIANTS {
     take:

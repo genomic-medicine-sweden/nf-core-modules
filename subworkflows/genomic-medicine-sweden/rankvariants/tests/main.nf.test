@@ -45,7 +45,7 @@ nextflow_workflow {
                 ])
                 input[2] = channel.of([
                     [ id: 'genmod_reduced_penetrance' ],
-                    []
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/genmod_reduced_penetrance.tsv', checkIfExists: true)
                 ])
                 input[3] = channel.of([
                     [ id: 'test' ],
@@ -59,7 +59,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.trace.sucessed().size() == 5 }, 
+                { assert workflow.trace.succeeded().size() == 5 },
                 { assert snapshot(
                     file(workflow.out.index.get(0).get(1)).name,
                     path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5
@@ -72,7 +72,7 @@ nextflow_workflow {
         }
     }
 
-test("Genmod score only") {
+    test("Genmod score only - without ped and reduced penetrance files") {
 
         when {
             workflow {
@@ -85,13 +85,10 @@ test("Genmod score only") {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
                 ])
-                input[2] = channel.of([
-                    [ id: 'genmod_reduced_penetrance' ],
-                    []
-                ])
+                input[2] = channel.empty()
                 input[3] = channel.of([
                     [ id: 'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/svrank_model_-v1.8-.ini', checkIfExists: true)
+                    file('/home/felix/projects/genomic-medicine-sweden/nf-core-modules/svrank_model_-v1.8-.ini', checkIfExists: true)
                 ])
                 input[4] = true
                 """
@@ -101,7 +98,7 @@ test("Genmod score only") {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.trace.sucessed().size() == 2 },
+                { assert workflow.trace.succeeded().size() == 2 },
                 { assert snapshot(
                     file(workflow.out.index.get(0).get(1)).name,
                     path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5
