@@ -88,7 +88,7 @@ nextflow_workflow {
                 input[2] = channel.empty()
                 input[3] = channel.of([
                     [ id: 'test' ],
-                    file('/home/felix/projects/genomic-medicine-sweden/nf-core-modules/svrank_model_-v1.8-.ini', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/svrank_model_-v1.8-.ini', checkIfExists: true)
                 ])
                 input[4] = true
                 """

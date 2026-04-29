@@ -2,9 +2,9 @@
     "Genmod score only - without ped and reduced penetrance files": {
         "content": [
             "test_bcftools_view.vcf.gz.tbi",
-            "8a00feffdf0bfe1ad50c0093065d8c0d"
+            "9a0178e1314d5013fffb8a7b7d5f9128"
         ],
-        "timestamp": "2026-04-29T10:16:39.966074636",
+        "timestamp": "2026-04-29T10:58:08.189041244",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.03.1"
