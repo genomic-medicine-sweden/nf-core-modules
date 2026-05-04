@@ -5,15 +5,15 @@ nextflow_workflow {
     config "./nextflow.config"
     workflow "VCF_RANK_VARIANTS_GENMOD"
     tag "subworkflows"
-    tag "subworkflows_genomic_medicine_sweden"
+    tag "subworkflows_genomicmedicinesweden"
     tag "subworkflows/vcf_rank_variants_genmod"
     tag "genmod"
-    tag "genmod/annotate"
-    tag "genmod/models"
-    tag "genmod/score"
-    tag "genmod/compound"
-    tag "bcftools"
-    tag "bcftools/view"
+    tag "subworkflows/../../modules/nf-core/genmod/annotate"
+    tag "subworkflows/../../modules/nf-core/genmod/models"
+    tag "subworkflows/../../modules/nf-core/genmod/score"
+    tag "subworkflows/../../modules/nf-core/genmod/compound"
+    tag "subworkflows/../../modules/nf-core/bcftools"
+    tag "subworkflows/../../modules/nf-core/bcftools/view"
 
     setup {
         nfcoreInitialise("${launchDir}/library/")
