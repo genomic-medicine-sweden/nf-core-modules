@@ -3,65 +3,101 @@ name: "VCF_RANK_VARIANTS_GENMOD"
 description: Rank variants using Genmod.
 keywords:
   - vcf
-  - rank
-  - variants
+  - variant prioritization
   - genmod
+  - scoring
+  - inheritance models
+
 components:
-  - genmod_annotate
-  - genmod_models
-  - genmod_score
-  - genmod_compound
-  - bcftools_view
+  - genmod/annotate
+  - genmod/models
+  - genmod/score
+  - genmod/compound
+  - bcftools/view
+
 input:
   - ch_vcf:
-      type: file
       description: |
-        The input channel containing the VCF files.
-        Structure: [ val(meta), path(vcf) ]
-      pattern: "*.vcf"
+        Channel with input VCF files
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - vcf:
+            type: file
+            description: Input VCF file (must be uncompressed)
+            pattern: "*.vcf"
+
   - ch_ped:
-      type: file
       description: |
-        The input channel containing the PED files.
-        Structure: [ val(meta), path(ped) ]
-        Where, meta should match the meta of the VCF file in ch_vcf.
-      pattern: "*.ped"
+        Channel with input PED file for genmod score and models
+      structure:
+        - meta:
+            type: map
+            description: Metadata map matching the ch_vcf channel meta
+        - ped:
+            type: file
+            description: PED file
+            pattern: "*.ped"
+
   - ch_genmod_reduced_penetrance:
-      type: file
       description: |
-        The input channel containing the reduced penetrance file for Genmod Models.
-        Optional file.
-        Structure: [ path(reduced_penetrance.tsv) ]
-      pattern: "reduced_penetrance.tsv"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        (optional) reduced penetrance file for genmod models
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - reduced_penetrance:
+            type: file
+            description: Reduced penetrance file
+            pattern: "*.tsv"
+
+  - ch_score_config:
+      description: |
+        Genmod score configuration file (rank model)
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - score_config:
+            type: file
+            description: Scoring configuration file
+            pattern: "*.ini"
+
+  - val_score_only:
+      description: |
+        If true, only run genmod score
+      type: boolean
+
 output:
-  - bam:
-      type: file
+  - vcf:
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
+        Channel containing (compressed) VCF or BCF file
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - vcf:
+            type: file
+            description: Output VCF file
+            pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+
+  - index:
       description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
+        Channel containing corresponding index file
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - index:
+            type: file
+            description: VCF index file
+            pattern: "*.{tbi,csi}"
+
 authors:
   - "@beatrizsavinhas"
   - "@fellen31"
+
 maintainers:
   - "@beatrizsavinhas"
   - "@fellen31"
