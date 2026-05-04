@@ -7,18 +7,16 @@ keywords:
   - genmod
   - scoring
   - inheritance models
-
 components:
   - genmod/annotate
   - genmod/models
   - genmod/score
   - genmod/compound
   - bcftools/view
-
 input:
   - ch_vcf:
       description: |
-        Channel with input VCF files
+        Channel with input VCF file
       structure:
         - meta:
             type: map
@@ -27,10 +25,9 @@ input:
             type: file
             description: Input VCF file (must be uncompressed)
             pattern: "*.vcf"
-
   - ch_ped:
       description: |
-        Channel with input PED file for genmod score and models
+        Channel with input PED file for genmod score and models 
       structure:
         - meta:
             type: map
@@ -39,10 +36,9 @@ input:
             type: file
             description: PED file
             pattern: "*.ped"
-
   - ch_genmod_reduced_penetrance:
       description: |
-        (optional) reduced penetrance file for genmod models
+        Channel with (optional) reduced penetrance file for genmod models
       structure:
         - meta:
             type: map
@@ -51,24 +47,21 @@ input:
             type: file
             description: Reduced penetrance file
             pattern: "*.tsv"
-
   - ch_score_config:
       description: |
-        Genmod score configuration file (rank model)
+        Channel with genmod score configuration file (rank model)
       structure:
         - meta:
             type: map
             description: Metadata map
         - score_config:
             type: file
-            description: Scoring configuration file
+            description: Score configuration file
             pattern: "*.ini"
-
   - val_score_only:
+      type: boolean
       description: |
         If true, only run genmod score
-      type: boolean
-
 output:
   - vcf:
       description: |
@@ -79,9 +72,8 @@ output:
             description: Metadata map
         - vcf:
             type: file
-            description: Output VCF file
+            description: VCF or BCF file
             pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-
   - index:
       description: |
         Channel containing corresponding index file
@@ -91,13 +83,11 @@ output:
             description: Metadata map
         - index:
             type: file
-            description: VCF index file
+            description: Index file
             pattern: "*.{tbi,csi}"
-
 authors:
   - "@beatrizsavinhas"
   - "@fellen31"
-
 maintainers:
   - "@beatrizsavinhas"
   - "@fellen31"
