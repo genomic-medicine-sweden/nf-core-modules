@@ -10,7 +10,7 @@ workflow VCF_RANK_VARIANTS_GENMOD {
     ch_ped                       // channel: [mandatory] [ val(meta), path(ped) ]
     ch_genmod_reduced_penetrance // channel: [optional]  [ val(meta), path(penetrance) ]
     ch_score_config              // channel: [mandatory] [ val(meta), path(ini) ]
-    val_score_only               // Boolean: [optional]  If true, only run the scoring step (i.e. skip annotation and model building)
+    val_score_only               // Boolean: If true, only run the scoring step
 
     main:
 
