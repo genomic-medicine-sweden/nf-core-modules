@@ -1,24 +1,38 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "rankvariants"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+name: "VCF_RANK_VARIANTS_GENMOD"
+description: Rank variants using Genmod.
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - vcf
+  - rank
+  - variants
+  - genmod
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - genmod_annotate
+  - genmod_models
+  - genmod_score
+  - genmod_compound
+  - bcftools_view
 input:
-  - ch_bam:
+  - ch_vcf:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
+        The input channel containing the VCF files.
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.vcf"
+  - ch_ped:
+      type: file
+      description: |
+        The input channel containing the PED files.
+        Structure: [ val(meta), path(ped) ]
+        Where, meta should match the meta of the VCF file in ch_vcf.
+      pattern: "*.ped"
+  - ch_genmod_reduced_penetrance:
+      type: file
+      description: |
+        The input channel containing the reduced penetrance file for Genmod Models.
+        Optional file.
+        Structure: [ path(reduced_penetrance.tsv) ]
+      pattern: "reduced_penetrance.tsv"
 ## TODO nf-core: List all of the channels used as output with a descriptions and their structure
 output:
   - bam:
