@@ -1,14 +1,10 @@
-//
-// A subworkflow to score and rank variants.
-//
-
+include { BCFTOOLS_VIEW   } from '../../../modules/nf-core/bcftools/view/main'
 include { GENMOD_ANNOTATE } from '../../../modules/nf-core/genmod/annotate/main'
+include { GENMOD_COMPOUND } from '../../../modules/nf-core/genmod/compound/main'
 include { GENMOD_MODELS   } from '../../../modules/nf-core/genmod/models/main'
 include { GENMOD_SCORE    } from '../../../modules/nf-core/genmod/score/main'
-include { GENMOD_COMPOUND } from '../../../modules/nf-core/genmod/compound/main'
-include { BCFTOOLS_VIEW   } from '../../../modules/nf-core/bcftools/view/main'
 
-workflow RANK_VARIANTS {
+workflow VCF_RANK_VARIANTS_GENMOD {
     take:
     ch_vcf                       // channel: [mandatory] [ val(meta), path(vcf) ]
     ch_ped                       // channel: [mandatory] [ val(meta), path(ped) ]

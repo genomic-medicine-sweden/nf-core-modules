@@ -1,12 +1,12 @@
 nextflow_workflow {
 
-    name "Test Workflow RANK_VARIANTS"
+    name "Test Workflow VCF_RANK_VARIANTS_GENMOD"
     script "../main.nf"
     config "./nextflow.config"
-    workflow "RANK_VARIANTS"
+    workflow "VCF_RANK_VARIANTS_GENMOD"
     tag "subworkflows"
     tag "subworkflows_genomic_medicine_sweden"
-    tag "subworkflows/rankvariants"
+    tag "subworkflows/vcf_rank_variants_genmod"
     tag "genmod"
     tag "genmod/annotate"
     tag "genmod/models"
