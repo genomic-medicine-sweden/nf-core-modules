@@ -27,7 +27,7 @@ input:
             pattern: "*.vcf"
   - ch_ped:
       description: |
-        Channel with input PED file for genmod score and models
+        Channel with input PED file for genmod models and score (optional)
       structure:
         - meta:
             type: map

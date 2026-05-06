@@ -7,7 +7,7 @@ include { GENMOD_SCORE    } from '../../../modules/nf-core/genmod/score/main'
 workflow VCF_RANK_VARIANTS_GENMOD {
     take:
     ch_vcf                       // channel: [mandatory] [ val(meta), path(vcf) ]
-    ch_ped                       // channel: [mandatory] [ val(meta), path(ped) ]
+    ch_ped                       // channel: [optional]  [ val(meta), path(ped) ]
     ch_genmod_reduced_penetrance // channel: [optional]  [ val(meta), path(penetrance) ]
     ch_score_config              // channel: [mandatory] [ val(meta), path(ini) ]
     val_score_only               // Boolean: If true, only run the scoring step
@@ -16,8 +16,11 @@ workflow VCF_RANK_VARIANTS_GENMOD {
 
     if (val_score_only) {
         ch_genmod_score_in = ch_vcf
-            .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
+            .join(ch_ped, failOnDuplicate: true, remainder: true)
             .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
+            .map { meta, vcf, ped, score_config ->
+                ped ? [meta, vcf, ped, score_config] : [meta, vcf, [], score_config]
+            }
     }
     else {
         GENMOD_ANNOTATE(

@@ -22,7 +22,7 @@
         "timestamp": "2026-05-06T15:56:34.594452556",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "25.10.4"
         }
     },
     "Genmod score only - without ped and reduced penetrance files - stub": {
