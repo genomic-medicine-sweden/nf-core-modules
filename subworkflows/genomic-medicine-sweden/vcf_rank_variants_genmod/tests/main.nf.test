@@ -61,8 +61,9 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert workflow.trace.succeeded().size() == 5 },
                 { assert snapshot(
-                    file(workflow.out.index.get(0).get(1)).name,
-                    path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5
+                    // Index file doesn't have stable content, so only the name is snapshot
+                    workflow.out.index.collect { meta, index -> [meta, file(index).name] },
+                    workflow.out.vcf.collect { meta, vcf -> [meta, file(vcf).name, path(vcf).vcf.variantsMD5] }
                 ).match() }
             )
         }
@@ -100,8 +101,9 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert workflow.trace.succeeded().size() == 2 },
                 { assert snapshot(
-                    file(workflow.out.index.get(0).get(1)).name,
-                    path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5
+                    // Index file doesn't have stable content, so only the name is snapshot
+                    workflow.out.index.collect { meta, index -> [meta, file(index).name] },
+                    workflow.out.vcf.collect { meta, vcf -> [meta, file(vcf).name, path(vcf).vcf.variantsMD5] }
                 ).match() }
             )
         }

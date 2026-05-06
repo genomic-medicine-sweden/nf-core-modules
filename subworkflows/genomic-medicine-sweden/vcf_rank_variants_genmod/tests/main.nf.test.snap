@@ -1,13 +1,28 @@
 {
     "Genmod score only - without ped and reduced penetrance files": {
         "content": [
-            "test_bcftools_view.vcf.gz.tbi",
-            "8779861ad2646fba24cb80aa81f74f0c"
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test_bcftools_view.vcf.gz.tbi"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test_bcftools_view.vcf.gz",
+                    "8779861ad2646fba24cb80aa81f74f0c"
+                ]
+            ]
         ],
-        "timestamp": "2026-04-29T14:51:24.896190982",
+        "timestamp": "2026-05-06T15:56:34.594452556",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.1"
+            "nextflow": "26.04.0"
         }
     },
     "Genmod score only - without ped and reduced penetrance files - stub": {
@@ -98,13 +113,28 @@
     },
     "All genmod modules": {
         "content": [
-            "test_bcftools_view.vcf.gz.tbi",
-            "4b2da055241ee8f39cb2fd2b06534f3b"
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test_bcftools_view.vcf.gz.tbi"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test_bcftools_view.vcf.gz",
+                    "4b2da055241ee8f39cb2fd2b06534f3b"
+                ]
+            ]
         ],
-        "timestamp": "2026-04-29T14:49:35.494971048",
+        "timestamp": "2026-05-06T15:53:28.289769627",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.1"
+            "nextflow": "26.04.0"
         }
     }
 }
