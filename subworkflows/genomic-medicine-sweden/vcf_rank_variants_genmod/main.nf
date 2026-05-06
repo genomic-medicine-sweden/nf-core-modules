@@ -55,7 +55,7 @@ workflow VCF_RANK_VARIANTS_GENMOD {
         }
     }
 
-    // Genmod can only output a uncompressed VCF, bcftools view can be used to compress and index the output.
+    // Genmod can only output an uncompressed VCF, bcftools view can be used to compress and index the output file.
     BCFTOOLS_VIEW(
         ch_bcftools_view_in,
         [],
