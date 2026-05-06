@@ -41,7 +41,7 @@ workflow VCF_RANK_VARIANTS_GENMOD {
     )
 
     if (val_score_only) {
-        ch_bcftool_view_in = GENMOD_SCORE.out.vcf.map { meta, vcf ->
+        ch_bcftools_view_in = GENMOD_SCORE.out.vcf.map { meta, vcf ->
             [meta, vcf, []]
         }
     }
@@ -50,14 +50,14 @@ workflow VCF_RANK_VARIANTS_GENMOD {
             GENMOD_SCORE.out.vcf
         )
 
-        ch_bcftool_view_in = GENMOD_COMPOUND.out.vcf.map { meta, vcf ->
+        ch_bcftools_view_in = GENMOD_COMPOUND.out.vcf.map { meta, vcf ->
             [meta, vcf, []]
         }
     }
 
     // Genmod can only output a uncompressed VCF, bcftools view can be used to compress and index the output.
     BCFTOOLS_VIEW(
-        ch_bcftool_view_in,
+        ch_bcftools_view_in,
         [],
         [],
         [],
