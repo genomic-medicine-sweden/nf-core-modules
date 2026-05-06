@@ -15,11 +15,11 @@
                         "id": "test"
                     },
                     "test_bcftools_view.vcf.gz",
-                    "8779861ad2646fba24cb80aa81f74f0c"
+                    "69632895a41aa4caa8cbdffacf50a14e"
                 ]
             ]
         ],
-        "timestamp": "2026-05-06T15:56:34.594452556",
+        "timestamp": "2026-05-06T16:46:35.82009",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
