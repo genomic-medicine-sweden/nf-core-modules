@@ -30,7 +30,8 @@ workflow VCF_ANNOTATE_SCORE_GENMOD {
         )
 
         ch_vcf_for_genmod_score = GENMOD_MODELS.out.vcf
-    } else {
+    }
+    else {
         ch_vcf_for_genmod_score = ch_vcf
     }
 
@@ -51,11 +52,12 @@ workflow VCF_ANNOTATE_SCORE_GENMOD {
         )
 
         ch_bcftools_view_in = GENMOD_COMPOUND.out.vcf
-    } else {
+    }
+    else {
         ch_bcftools_view_in = GENMOD_SCORE.out.vcf
     }
 
-    // Genmod can only output an uncompressed VCF, bcftools view can be used to compress and index the output file.
+    // Genmod can only output an uncompressed VCF, bcftools view can be used to compress and index the output file
     BCFTOOLS_VIEW(
         ch_bcftools_view_in.map { meta, vcf -> [meta, vcf, []] },
         [],
@@ -64,6 +66,6 @@ workflow VCF_ANNOTATE_SCORE_GENMOD {
     )
 
     emit:
-    vcf = BCFTOOLS_VIEW.out.vcf                              // channel: [ val(meta), path(vcf) ]
+    vcf   = BCFTOOLS_VIEW.out.vcf                            // channel: [ val(meta), path(vcf) ]
     index = BCFTOOLS_VIEW.out.tbi.mix(BCFTOOLS_VIEW.out.csi) // channel: [ val(meta), path(index) ]
 }
