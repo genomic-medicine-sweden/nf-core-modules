@@ -13,16 +13,11 @@ workflow VCF_RANK_VARIANTS_GENMOD {
     val_score_only               // Boolean: If true, only run the scoring step
 
     main:
+    def val_run_annotate_and_models = !val_score_only
+    def val_run_compounds = !val_score_only
 
-    if (val_score_only) {
-        ch_genmod_score_in = ch_vcf
-            .join(ch_ped, failOnDuplicate: true, remainder: true)
-            .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
-            .map { meta, vcf, ped, score_config ->
-                ped ? [meta, vcf, ped, score_config] : [meta, vcf, [], score_config]
-            }
-    }
-    else {
+    if (val_run_annotate_and_models) {
+
         GENMOD_ANNOTATE(
             ch_vcf
         )
@@ -37,23 +32,29 @@ workflow VCF_RANK_VARIANTS_GENMOD {
         ch_genmod_score_in = GENMOD_MODELS.out.vcf
             .join(ch_ped, failOnMismatch: true, failOnDuplicate: true)
             .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
+    } else {
+        ch_genmod_score_in = ch_vcf
+            .join(ch_ped, failOnDuplicate: true, remainder: true)
+            .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
+            .map { meta, vcf, ped, score_config ->
+                ped ? [meta, vcf, ped, score_config] : [meta, vcf, [], score_config]
+            }
     }
 
     GENMOD_SCORE(
         ch_genmod_score_in
     )
 
-    if (val_score_only) {
-        ch_bcftools_view_in = GENMOD_SCORE.out.vcf.map { meta, vcf ->
-            [meta, vcf, []]
-        }
-    }
-    else {
+    if (val_run_compounds) {
         GENMOD_COMPOUND(
             GENMOD_SCORE.out.vcf
         )
 
         ch_bcftools_view_in = GENMOD_COMPOUND.out.vcf.map { meta, vcf ->
+            [meta, vcf, []]
+        }
+    } else {
+        ch_bcftools_view_in = GENMOD_SCORE.out.vcf.map { meta, vcf ->
             [meta, vcf, []]
         }
     }
