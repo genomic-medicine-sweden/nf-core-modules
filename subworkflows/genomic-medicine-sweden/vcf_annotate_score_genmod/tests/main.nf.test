@@ -1,12 +1,12 @@
 nextflow_workflow {
 
-    name "Test Workflow VCF_RANK_VARIANTS_GENMOD"
+    name "Test Workflow VCF_ANNOTATE_SCORE_GENMOD"
     script "../main.nf"
     config "./nextflow.config"
-    workflow "VCF_RANK_VARIANTS_GENMOD"
+    workflow "VCF_ANNOTATE_SCORE_GENMOD"
     tag "subworkflows"
     tag "subworkflows_genomicmedicinesweden"
-    tag "subworkflows/vcf_rank_variants_genmod"
+    tag "subworkflows/vcf_annotate_score_genmod"
     tag "genmod"
     tag "subworkflows/../../modules/nf-core/genmod/annotate"
     tag "subworkflows/../../modules/nf-core/genmod/models"
@@ -162,10 +162,7 @@ nextflow_workflow {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz', checkIfExists: true)
                 ])
-                input[1] = channel.of([
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
-                ])
+                input[1] = channel.empty()
                 input[2] = channel.empty()
                 input[3] = channel.of([
                     [ id: 'test' ],
