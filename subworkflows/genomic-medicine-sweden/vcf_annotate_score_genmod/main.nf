@@ -4,7 +4,7 @@ include { GENMOD_COMPOUND } from '../../../modules/nf-core/genmod/compound/main'
 include { GENMOD_MODELS   } from '../../../modules/nf-core/genmod/models/main'
 include { GENMOD_SCORE    } from '../../../modules/nf-core/genmod/score/main'
 
-workflow VCF_RANK_VARIANTS_GENMOD {
+workflow VCF_ANNOTATE_SCORE_GENMOD {
     take:
     ch_vcf                       // channel: [mandatory] [ val(meta), path(vcf) ]
     ch_ped                       // channel: [optional]  [ val(meta), path(ped) ]

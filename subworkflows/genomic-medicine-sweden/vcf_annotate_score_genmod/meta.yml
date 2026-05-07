@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/genomic-medicine-sweden/nf-core-modules/main/subworkflows/yaml-schema.json
-name: "VCF_RANK_VARIANTS_GENMOD"
-description: Rank variants using Genmod
+name: "VCF_ANNOTATE_SCORE_GENMOD"
+description: Annotate and score variants using Genmod
 keywords:
   - vcf
   - variant prioritization
