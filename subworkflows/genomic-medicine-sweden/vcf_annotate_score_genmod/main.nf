@@ -17,7 +17,6 @@ workflow VCF_ANNOTATE_SCORE_GENMOD {
     def val_run_compounds = !val_run_score_only
 
     if (val_run_annotate_and_models) {
-
         GENMOD_ANNOTATE(
             ch_vcf
         )
