@@ -58,7 +58,7 @@ input:
             type: file
             description: Score configuration file
             pattern: "*.ini"
-  - val_score_only:
+  - val_run_score_only:
       type: boolean
       description: |
         If true, only run genmod score
