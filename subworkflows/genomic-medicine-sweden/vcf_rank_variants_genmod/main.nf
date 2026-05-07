@@ -17,10 +17,10 @@ workflow VCF_RANK_VARIANTS_GENMOD {
     if (val_score_only) {
         ch_genmod_score_in = ch_vcf
             .join(ch_ped, failOnDuplicate: true, remainder: true)
-            .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
-            .map { meta, vcf, ped, score_config ->
-                ped ? [meta, vcf, ped, score_config] : [meta, vcf, [], score_config]
+            .map { meta, vcf, ped ->
+                ped ? [meta, vcf, ped] : [meta, vcf, []]
             }
+            .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
     }
     else {
         GENMOD_ANNOTATE(

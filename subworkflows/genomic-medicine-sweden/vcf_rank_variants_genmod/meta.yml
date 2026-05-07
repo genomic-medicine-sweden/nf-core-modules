@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/genomic-medicine-sweden/nf-core-modules/main/subworkflows/yaml-schema.json
 name: "VCF_RANK_VARIANTS_GENMOD"
-description: Rank variants using Genmod.
+description: Rank variants using Genmod
 keywords:
   - vcf
   - variant prioritization
@@ -27,7 +27,9 @@ input:
             pattern: "*.vcf"
   - ch_ped:
       description: |
-        Channel with input PED file for genmod models and score (optional)
+        Channel with input PED file
+        Mandatory for genmod models and optional for genmod score
+        Provide channel.empty() if not used
       structure:
         - meta:
             type: map
