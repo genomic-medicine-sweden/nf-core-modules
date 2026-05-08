@@ -36,10 +36,10 @@ workflow VCF_ANNOTATE_SCORE_GENMOD {
 
     def ch_genmod_score_in = ch_vcf_for_genmod_score
         .join(ch_ped, failOnDuplicate: true, remainder: true)
-        .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
-        .map { meta, vcf, ped, score_config ->
-            ped ? [meta, vcf, ped, score_config] : [meta, vcf, [], score_config]
+        .map { meta, vcf, ped ->
+            ped ? [meta, vcf, ped] : [meta, vcf, []]
         }
+        .join(ch_score_config, failOnMismatch: true, failOnDuplicate: true)
 
     GENMOD_SCORE(
         ch_genmod_score_in
