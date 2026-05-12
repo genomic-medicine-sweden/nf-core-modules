@@ -8,15 +8,15 @@ keywords:
   - scoring
   - inheritance models
 components:
-  - genmod/annotate
+  - genmod/annotate:
       git_remote: https://github.com/nf-core/modules.git
-  - genmod/models
+  - genmod/models:
       git_remote: https://github.com/nf-core/modules.git
-  - genmod/score
+  - genmod/score:
       git_remote: https://github.com/nf-core/modules.git
-  - genmod/compound
+  - genmod/compound:
       git_remote: https://github.com/nf-core/modules.git
-  - bcftools/view
+  - bcftools/view:
       git_remote: https://github.com/nf-core/modules.git
 input:
   - ch_vcf:
