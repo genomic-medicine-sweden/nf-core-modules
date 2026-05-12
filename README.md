@@ -31,7 +31,7 @@ We use a helper command in the `nf-core/tools` package that uses the GitHub API 
 2. List the available modules:
 
    ```bash
-   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git list remote
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git list remote
    ```
 
    ```console
@@ -43,7 +43,7 @@ We use a helper command in the `nf-core/tools` package that uses the GitHub API 
 
       nf-core/tools version 3.4.1 - https://nf-co.re
 
-   INFO     Modules available from https://github.com/genomic-medicine-sweden/modules.git (main):
+   INFO     Modules available from https://github.com/genomic-medicine-sweden/nf-core-modules.git (main):
 
    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
    ┃ Module Name                ┃
@@ -55,7 +55,7 @@ We use a helper command in the `nf-core/tools` package that uses the GitHub API 
 3. Install the module in your pipeline directory:
 
    ```bash
-   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git install examplemodule
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git install examplemodule
    ```
 
    ```console
@@ -84,7 +84,7 @@ We use a helper command in the `nf-core/tools` package that uses the GitHub API 
 5. Check that a locally installed genomic-medicine-sweden module is up-to-date compared to the one hosted in this repo:
 
    ```bash
-   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git lint examplemodule
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git lint examplemodule
    ```
 
    ```console
@@ -119,7 +119,7 @@ We use a helper command in the `nf-core/tools` package that uses the GitHub API 
 6. Remove the module from the pipeline repository if required:
 
    ```bash
-   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/modules.git remove examplemodule
+   nf-core modules --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git remove examplemodule
    ```
 
    ```console
@@ -144,7 +144,7 @@ Sub-workflows are stored in the [`subworkflows/`](subworkflows/) directory of th
 1. List the available sub-workflows:
 
    ```bash
-   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git list remote
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git list remote
    ```
 
    ```console
@@ -156,7 +156,7 @@ Sub-workflows are stored in the [`subworkflows/`](subworkflows/) directory of th
 
       nf-core/tools version 3.4.1 - https://nf-co.re
 
-   INFO     Subworkflows available from https://github.com/genomic-medicine-sweden/modules.git (main):
+   INFO     Subworkflows available from https://github.com/genomic-medicine-sweden/nf-core-modules.git (main):
 
    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
    ┃ Subworkflow Name               ┃
@@ -168,7 +168,7 @@ Sub-workflows are stored in the [`subworkflows/`](subworkflows/) directory of th
 2. Install the sub-workflow in your pipeline directory:
 
    ```bash
-   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git install examplesubworkflow
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git install examplesubworkflow
    ```
 
    ```console
@@ -197,7 +197,7 @@ Sub-workflows are stored in the [`subworkflows/`](subworkflows/) directory of th
 4. Check that a locally installed genomic-medicine-sweden sub-workflow is up-to-date compared to the one hosted in this repo:
 
    ```bash
-   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git lint examplesubworkflow
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git lint examplesubworkflow
    ```
 
    ```console
@@ -224,7 +224,7 @@ Sub-workflows are stored in the [`subworkflows/`](subworkflows/) directory of th
 5. Remove the sub-workflow from the pipeline repository if required:
 
    ```bash
-   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/modules.git remove examplesubworkflow
+   nf-core subworkflows --git-remote https://github.com/genomic-medicine-sweden/nf-core-modules.git remove examplesubworkflow
    ```
 
    ```console
