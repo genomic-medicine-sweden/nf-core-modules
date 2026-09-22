@@ -1,4 +1,4 @@
-include { BCFTOOLS_VIEW   } from '../../../modules/nf-core/bcftools/view/main'
+include { BCFTOOLS_SORT   } from '../../../modules/nf-core/bcftools/sort/main'
 include { GENMOD_ANNOTATE } from '../../../modules/nf-core/genmod/annotate/main'
 include { GENMOD_COMPOUND } from '../../../modules/nf-core/genmod/compound/main'
 include { GENMOD_MODELS   } from '../../../modules/nf-core/genmod/models/main'
@@ -50,21 +50,19 @@ workflow VCF_ANNOTATE_SCORE_GENMOD {
             GENMOD_SCORE.out.vcf
         )
 
-        ch_bcftools_view_in = GENMOD_COMPOUND.out.vcf
+        ch_bcftools_sort_in = GENMOD_COMPOUND.out.vcf
     }
     else {
-        ch_bcftools_view_in = GENMOD_SCORE.out.vcf
+        ch_bcftools_sort_in = GENMOD_SCORE.out.vcf
     }
 
-    // Genmod can only output an uncompressed VCF, bcftools view can be used to compress and index the output file
-    BCFTOOLS_VIEW(
-        ch_bcftools_view_in.map { meta, vcf -> [meta, vcf, []] },
-        [],
-        [],
-        [],
+    // Genmod only outputs uncompressed VCFs, and multi-threaded sorting of genmod compoundcan order variants at the same position inconsistently.
+    // bcftools sort compresses, indexes, and stabilizes the final output.
+    BCFTOOLS_SORT(
+        ch_bcftools_sort_in,
     )
 
     emit:
-    vcf   = BCFTOOLS_VIEW.out.vcf                            // channel: [ val(meta), path(vcf) ]
-    index = BCFTOOLS_VIEW.out.tbi.mix(BCFTOOLS_VIEW.out.csi) // channel: [ val(meta), path(index) ]
+    vcf   = BCFTOOLS_SORT.out.vcf   // channel: [ val(meta), path(vcf) ]
+    index = BCFTOOLS_SORT.out.index // channel: [ val(meta), path(index) ]
 }

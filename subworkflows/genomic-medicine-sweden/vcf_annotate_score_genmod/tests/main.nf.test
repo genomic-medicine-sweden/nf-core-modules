@@ -13,7 +13,7 @@ nextflow_workflow {
     tag "subworkflows/../../modules/nf-core/genmod/score"
     tag "subworkflows/../../modules/nf-core/genmod/compound"
     tag "subworkflows/../../modules/nf-core/bcftools"
-    tag "subworkflows/../../modules/nf-core/bcftools/view"
+    tag "subworkflows/../../modules/nf-core/bcftools/sort"
 
     setup {
         nfcoreInitialise("${launchDir}/library/")
@@ -24,7 +24,7 @@ nextflow_workflow {
                 "genmod/models",
                 "genmod/score",
                 "genmod/compound",
-                "bcftools/view",
+                "bcftools/sort",
             ]
         )
         nfcoreLink("${launchDir}/library/", "${baseDir}/modules/")
